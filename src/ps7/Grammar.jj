@@ -71,7 +71,7 @@ void conditional() :
       System.out.print("] la 0 [sa [");    }
     "else { " (statement())+ " }"
     {
-      System.out.print("]] sa =a ");    }  )}
+      System.out.print("]] sa =a x");    }  )}
 void statement() :{  Token t;
   Token type;
   String etype;}{  (

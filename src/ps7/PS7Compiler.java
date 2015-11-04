@@ -137,7 +137,7 @@ public class PS7Compiler implements PS7CompilerConstants {
       }
     }
     jj_consume_token(30);
-      System.out.print("]] sa =a ");
+      System.out.print("]] sa =a x");
   }
 
   final public void statement() throws ParseException {
