@@ -74,29 +74,22 @@ void conditional() :
       System.out.print("]] sa =a x");    }  )}
 void statement() :{  Token t;
   Token type;
-  String etype;}{  (
-    (type = < INTTYPE > | type = < STRINGTYPE > | type = < BOOLEANTYPE >)      t = < VAR > < EQUALS > etype = cmp_exp() ";"
+  String etype;}{
+  (
+    t = < VAR > < EQUALS > etype = cmp_exp() ";"
     {
       if (variables.get(t.image) == null)
       {
-        if (variables.size() >= 26)
-        {
-          throw new TypeException("Too many variables; limit is 26");
-        }
-        variables.put(t.image, (char) ('A' + variables.size()));
-		types.put(t.image, type.image);
+          throw new TypeException("Undeclared variable: " + t.image);
+      }
 
-		if (!type.image.equals(etype))
-		{
-		  System.out.println("GOT HERE: " + type.image + ", " + etype);		  throw new TypeException("Type mismatch");
-		}
+      if (!types.get(t.image).equals(etype))
+	  {
+		  throw new TypeException("Type mismatch");
+      }
 		
-		char reg2 = variables.get(t.image);
-        System.out.println("s" + reg2 + " ");
-      }
-      else
-      {        throw new TypeException("Variable already declared: " + t.image);
-      }
+      char reg = variables.get(t.image);
+      System.out.println("s" + reg + " ");
     }
   )
 |     (    < PRINT > etype = cmp_exp() ";"    {
@@ -118,20 +111,31 @@ void declaration() :
 }
 {
   (
-    t = < VAR > < EQUALS > etype = cmp_exp() ";"
+    (type = < INTTYPE > | type = < STRINGTYPE > | type = < BOOLEANTYPE >)
+      t = < VAR > < EQUALS > etype = cmp_exp() ";"
     {
       if (variables.get(t.image) == null)
       {
-          throw new TypeException("Undeclared variable: " + t.image);
-      }
+        if (variables.size() >= 26)
+        {
+          throw new TypeException("Too many variables; limit is 26");
+        }
+        variables.put(t.image, (char) ('A' + variables.size()));
+		types.put(t.image, type.image);
 
-      if (!types.get(t.image).equals(etype))
-	  {
+		if (!type.image.equals(etype))
+		{
+		  System.out.println("GOT HERE: " + type.image + ", " + etype);
 		  throw new TypeException("Type mismatch");
-      }
+		}
 		
-      char reg = variables.get(t.image);
-      System.out.println("s" + reg + " ");
+		char reg2 = variables.get(t.image);
+        System.out.println("s" + reg2 + " ");
+      }
+      else
+      {
+        throw new TypeException("Variable already declared: " + t.image);
+      }
     }
   )
 }

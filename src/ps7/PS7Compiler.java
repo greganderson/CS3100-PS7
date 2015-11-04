@@ -71,14 +71,14 @@ public class PS7Compiler implements PS7CompilerConstants {
         break label_1;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case PRINT:
+      case NEWLINE:
+      case VAR:
+        statement();
+        break;
       case INTTYPE:
       case STRINGTYPE:
       case BOOLEANTYPE:
-      case PRINT:
-      case NEWLINE:
-        statement();
-        break;
-      case VAR:
         declaration();
         break;
       case 25:
@@ -105,11 +105,9 @@ public class PS7Compiler implements PS7CompilerConstants {
     while (true) {
       statement();
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case INTTYPE:
-      case STRINGTYPE:
-      case BOOLEANTYPE:
       case PRINT:
       case NEWLINE:
+      case VAR:
         ;
         break;
       default:
@@ -124,11 +122,9 @@ public class PS7Compiler implements PS7CompilerConstants {
     while (true) {
       statement();
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case INTTYPE:
-      case STRINGTYPE:
-      case BOOLEANTYPE:
       case PRINT:
       case NEWLINE:
+      case VAR:
         ;
         break;
       default:
@@ -145,28 +141,72 @@ public class PS7Compiler implements PS7CompilerConstants {
   Token type;
   String etype;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case INTTYPE:
-    case STRINGTYPE:
-    case BOOLEANTYPE:
-      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-      case INTTYPE:
-        type = jj_consume_token(INTTYPE);
-        break;
-      case STRINGTYPE:
-        type = jj_consume_token(STRINGTYPE);
-        break;
-      case BOOLEANTYPE:
-        type = jj_consume_token(BOOLEANTYPE);
-        break;
-      default:
-        jj_la1[4] = jj_gen;
-        jj_consume_token(-1);
-        throw new ParseException();
-      }
+    case VAR:
       t = jj_consume_token(VAR);
       jj_consume_token(EQUALS);
       etype = cmp_exp();
       jj_consume_token(31);
+      if (variables.get(t.image) == null)
+      {
+          {if (true) throw new TypeException("Undeclared variable: " + t.image);}
+      }
+
+      if (!types.get(t.image).equals(etype))
+          {
+                  {if (true) throw new TypeException("Type mismatch");}
+      }
+
+      char reg = variables.get(t.image);
+      System.out.println("s" + reg + " ");
+      break;
+    case PRINT:
+      jj_consume_token(PRINT);
+      etype = cmp_exp();
+      jj_consume_token(31);
+      if (etype.equals("boolean"))
+      {
+        System.out.println("sa [true] la 0 [sa [false]] sa =a n");
+      }
+      else
+      {
+        System.out.println("n ");
+      }
+      break;
+    case NEWLINE:
+      jj_consume_token(NEWLINE);
+      jj_consume_token(31);
+            System.out.println("[] n ");
+      break;
+    default:
+      jj_la1[4] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+  }
+
+  final public void declaration() throws ParseException {
+  Token t;
+  Token type;
+  String etype;
+    switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+    case INTTYPE:
+      type = jj_consume_token(INTTYPE);
+      break;
+    case STRINGTYPE:
+      type = jj_consume_token(STRINGTYPE);
+      break;
+    case BOOLEANTYPE:
+      type = jj_consume_token(BOOLEANTYPE);
+      break;
+    default:
+      jj_la1[5] = jj_gen;
+      jj_consume_token(-1);
+      throw new ParseException();
+    }
+    t = jj_consume_token(VAR);
+    jj_consume_token(EQUALS);
+    etype = cmp_exp();
+    jj_consume_token(31);
       if (variables.get(t.image) == null)
       {
         if (variables.size() >= 26)
@@ -189,52 +229,6 @@ public class PS7Compiler implements PS7CompilerConstants {
       {
         {if (true) throw new TypeException("Variable already declared: " + t.image);}
       }
-      break;
-    case PRINT:
-      jj_consume_token(PRINT);
-      etype = cmp_exp();
-      jj_consume_token(31);
-      if (etype.equals("boolean"))
-      {
-        System.out.println("sa [true] la 0 [sa [false]] sa =a n");
-      }
-      else
-      {
-        System.out.println("n ");
-      }
-      break;
-    case NEWLINE:
-      jj_consume_token(NEWLINE);
-      jj_consume_token(31);
-            System.out.println("[] n ");
-      break;
-    default:
-      jj_la1[5] = jj_gen;
-      jj_consume_token(-1);
-      throw new ParseException();
-    }
-  }
-
-  final public void declaration() throws ParseException {
-  Token t;
-  Token type;
-  String etype;
-    t = jj_consume_token(VAR);
-    jj_consume_token(EQUALS);
-    etype = cmp_exp();
-    jj_consume_token(31);
-      if (variables.get(t.image) == null)
-      {
-          {if (true) throw new TypeException("Undeclared variable: " + t.image);}
-      }
-
-      if (!types.get(t.image).equals(etype))
-          {
-                  {if (true) throw new TypeException("Type mismatch");}
-      }
-
-      char reg = variables.get(t.image);
-      System.out.println("s" + reg + " ");
   }
 
   final public String cmp_exp() throws ParseException {
@@ -480,7 +474,7 @@ public class PS7Compiler implements PS7CompilerConstants {
       jj_la1_init_1();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x247c000,0x247c000,0x7c000,0x7c000,0x1c000,0x7c000,0x700,0x700,0xc0,0xc0,0x1800,0x1800,0x1682080,0x1680000,};
+      jj_la1_0 = new int[] {0x247c000,0x247c000,0x460000,0x460000,0x460000,0x1c000,0x700,0x700,0xc0,0xc0,0x1800,0x1800,0x1682080,0x1680000,};
    }
    private static void jj_la1_init_1() {
       jj_la1_1 = new int[] {0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x1,0x1,};
