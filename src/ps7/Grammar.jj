@@ -44,7 +44,8 @@
  }PARSER_END(PS7Compiler)/************************ Regular expressions that define tokens ***********************/SKIP :{  " "| "\r"| "\t"| "\n"}TOKEN : /* OPERATORS */{  < EQUALS : "=" >| < PLUS : "+" >| < MINUS : "-" >
 | < LESSTHAN : "<" >
 | < GREATERTHAN : ">" >
-| < ISEQUAL : "==" >| < MULTIPLY : "*" >| < DIVIDE : "/" >}TOKEN :{
+| < ISEQUAL : "==" >| < MULTIPLY : "*" >| < DIVIDE : "/" >
+| < BANG : "!" >}TOKEN :{
   < INTTYPE : "int" >
 | < STRINGTYPE : "string" >
 | < BOOLEANTYPE : "boolean" >| < PRINT : "print" >
@@ -84,7 +85,11 @@ void statement() :{  Token t;
       }
     }
   )
-|     (    < PRINT > cmp_exp() ";"    {      System.out.println("n ");    }  )
+|     (    < PRINT > etype = cmp_exp() ";"    {
+      if (etype.equals("boolean"))      {
+        System.out.println("sa [true] la 0 [sa [false]] sa =a n");      }
+      else      {
+        System.out.println("n ");      }          }  )
 |
 	(
 	  < NEWLINE > ";"
@@ -106,12 +111,12 @@ String cmp_exp() :
     cmp_type2 = exp()
     {
       if (t.image.equals("<"))      {
-      	System.out.print("sa sb [true] lb la [sa [false]] sa <a n ");        }
+      	System.out.print("sa sb 1 lb la [sa 0] sa <a ");      }
       else if (t.image.equals(">"))
       {
-        System.out.print("sa sb [true] lb la [sa [false]] sa >a n ");      }
+        System.out.print("sa sb 1 lb la [sa 0] sa >a ");      }
       else if (t.image.equals("=="))      {
-        System.out.print("sa sb [true] lb la [sa [false]] sa =a n ");
+        System.out.print("sa sb 0 lb la [sa 1] sa =a ");
         try        {  			checkBool(cmp_type1);
 			checkBool(cmp_type2);
 		}
@@ -145,7 +150,14 @@ String cmp_exp() :
   {
     checkInt(type2);
     System.out.print("_1 * ");
-    return "int";  }| type2 = element()
+    return "int";  }
+|
+  < BANG >
+  type2 = element()
+  {
+    checkBool(type2);
+    System.out.println("sa 1 la 1 [sa 0] sa =a ");
+    return type2;  }| type2 = element()
   {	return type2;
   }}String element() :{  Token t;
   String type1;}{  t = < CONSTANT >  {    System.out.print(t.image + " ");
@@ -153,9 +165,9 @@ String cmp_exp() :
 |
 	t = < BOOLEAN >
 	{
-	  if (t.image.equals("true"))	  {		System.out.println("1 sa [true] la 0 [sa [false]] sa =a n");
+	  if (t.image.equals("true"))	  {		System.out.println("1 ");
 	  }
-	  else	  {		System.out.println("0 sa [true] la 0 [sa [false]] sa =a n");
+	  else	  {		System.out.println("0 ");
 	  }
 		return "boolean";
 

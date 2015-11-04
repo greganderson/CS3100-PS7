@@ -82,7 +82,7 @@ public class PS7Compiler implements PS7CompilerConstants {
       t = jj_consume_token(VAR);
       jj_consume_token(EQUALS);
       etype = cmp_exp();
-      jj_consume_token(24);
+      jj_consume_token(25);
       if (variables.get(t.image) == null)
       {
           {if (true) throw new TypeException("Undeclared variable: " + t.image);}
@@ -117,7 +117,7 @@ public class PS7Compiler implements PS7CompilerConstants {
       t = jj_consume_token(VAR);
       jj_consume_token(EQUALS);
       etype = cmp_exp();
-      jj_consume_token(24);
+      jj_consume_token(25);
       if (variables.get(t.image) == null)
       {
         if (variables.size() >= 26)
@@ -142,13 +142,20 @@ public class PS7Compiler implements PS7CompilerConstants {
       break;
     case PRINT:
       jj_consume_token(PRINT);
-      cmp_exp();
-      jj_consume_token(24);
-      System.out.println("n ");
+      etype = cmp_exp();
+      jj_consume_token(25);
+      if (etype.equals("boolean"))
+      {
+        System.out.println("sa [true] la 0 [sa [false]] sa =a n");
+      }
+      else
+      {
+        System.out.println("n ");
+      }
       break;
     case NEWLINE:
       jj_consume_token(NEWLINE);
-      jj_consume_token(24);
+      jj_consume_token(25);
             System.out.println("[] n ");
       break;
     default:
@@ -192,15 +199,15 @@ public class PS7Compiler implements PS7CompilerConstants {
       cmp_type2 = exp();
       if (t.image.equals("<"))
       {
-        System.out.print("sa sb [true] lb la [sa [false]] sa <a n ");
+        System.out.print("sa sb 1 lb la [sa 0] sa <a ");
       }
       else if (t.image.equals(">"))
       {
-        System.out.print("sa sb [true] lb la [sa [false]] sa >a n ");
+        System.out.print("sa sb 1 lb la [sa 0] sa >a ");
       }
       else if (t.image.equals("=="))
       {
-        System.out.print("sa sb [true] lb la [sa [false]] sa =a n ");
+        System.out.print("sa sb 0 lb la [sa 1] sa =a ");
         try
         {
                         checkBool(cmp_type1);
@@ -304,11 +311,18 @@ public class PS7Compiler implements PS7CompilerConstants {
     System.out.print("_1 * ");
     {if (true) return "int";}
       break;
+    case BANG:
+      jj_consume_token(BANG);
+      type2 = element();
+    checkBool(type2);
+    System.out.println("sa 1 la 1 [sa 0] sa =a ");
+    {if (true) return type2;}
+      break;
     case CONSTANT:
     case BOOLEAN:
     case VAR:
     case STRING:
-    case 25:
+    case 26:
       type2 = element();
         {if (true) return type2;}
       break;
@@ -333,11 +347,11 @@ public class PS7Compiler implements PS7CompilerConstants {
       t = jj_consume_token(BOOLEAN);
           if (t.image.equals("true"))
           {
-                System.out.println("1 sa [true] la 0 [sa [false]] sa =a n");
+                System.out.println("1 ");
           }
           else
           {
-                System.out.println("0 sa [true] la 0 [sa [false]] sa =a n");
+                System.out.println("0 ");
           }
                 {if (true) return "boolean";}
       break;
@@ -361,10 +375,10 @@ public class PS7Compiler implements PS7CompilerConstants {
       {if (true) return types.get(t.image);}
     }
       break;
-    case 25:
-      jj_consume_token(25);
-      type1 = exp();
+    case 26:
       jj_consume_token(26);
+      type1 = exp();
+      jj_consume_token(27);
         {if (true) return type1;}
       break;
     default:
@@ -390,7 +404,7 @@ public class PS7Compiler implements PS7CompilerConstants {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x23e000,0xe000,0x23e000,0x700,0x700,0xc0,0xc0,0x1800,0x1800,0x2b40080,0x2b40000,};
+      jj_la1_0 = new int[] {0x47c000,0x1c000,0x47c000,0x700,0x700,0xc0,0xc0,0x1800,0x1800,0x5682080,0x5680000,};
    }
 
   /** Constructor with InputStream. */
@@ -507,7 +521,7 @@ public class PS7Compiler implements PS7CompilerConstants {
   /** Generate ParseException. */
   public ParseException generateParseException() {
     jj_expentries.clear();
-    boolean[] la1tokens = new boolean[27];
+    boolean[] la1tokens = new boolean[28];
     if (jj_kind >= 0) {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
@@ -521,7 +535,7 @@ public class PS7Compiler implements PS7CompilerConstants {
         }
       }
     }
-    for (int i = 0; i < 27; i++) {
+    for (int i = 0; i < 28; i++) {
       if (la1tokens[i]) {
         jj_expentry = new int[1];
         jj_expentry[0] = i;
