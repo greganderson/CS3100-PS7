@@ -71,6 +71,7 @@ public class PS7Compiler implements PS7CompilerConstants {
       }
       statement();
     }
+    jj_consume_token(0);
   }
 
   final public void statement() throws ParseException {
@@ -129,6 +130,7 @@ public class PS7Compiler implements PS7CompilerConstants {
 
                 if (!type.image.equals(etype))
                 {
+                  System.out.println("GOT HERE: " + type.image + ", " + etype);
                   {if (true) throw new TypeException("Type mismatch");}
                 }
 
@@ -225,7 +227,7 @@ public class PS7Compiler implements PS7CompilerConstants {
                 checkInt(cmp_type2);
           }
     }
-    {if (true) return "boolean";}
+    {if (true) return cmp_type1;}
     throw new Error("Missing return statement in function");
   }
 

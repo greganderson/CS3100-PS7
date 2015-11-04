@@ -52,16 +52,29 @@
 | < NEWLINE : "newline" >| < CONSTANT : (< DIGIT >)+ >| < #DIGIT : [ "0"-"9" ] >
 | < BOOLEAN : ("true" | "false") >| < VAR : (< LETTER >)+ >| < #LETTER :    [ "a"-"z" ]  | [ "A"-"Z" ] >
 | < STRING: "\"" (~["\"", "[", "]"])* "\"" >}/***************************** Productions that define grammar *******************/void program() :{
-}{  (    statement()  )*}
+}{  (    statement()  )*
+  < EOF >}
 void statement() :{  Token t;
   Token type;
-  String etype;}{  (    t = < VAR > < EQUALS > etype = cmp_exp() ";"    {      if (variables.get(t.image) == null)      {          throw new TypeException("Undeclared variable: " + t.image);      }
+  String etype;}{
+  (
+    t = < VAR > < EQUALS > etype = cmp_exp() ";"
+    {
+      if (variables.get(t.image) == null)
+      {
+          throw new TypeException("Undeclared variable: " + t.image);
+      }
 
       if (!types.get(t.image).equals(etype))
 	  {
 		  throw new TypeException("Type mismatch");
       }
-		      char reg = variables.get(t.image);      System.out.println("s" + reg + " ");    }  )|  (
+		
+      char reg = variables.get(t.image);
+      System.out.println("s" + reg + " ");
+    }
+  )
+|   (
     (type = < INTTYPE > | type = < STRINGTYPE > | type = < BOOLEANTYPE >)      t = < VAR > < EQUALS > etype = cmp_exp() ";"
     {
       if (variables.get(t.image) == null)
@@ -74,7 +87,8 @@ void statement() :{  Token t;
 		types.put(t.image, type.image);
 
 		if (!type.image.equals(etype))
-		{		  throw new TypeException("Type mismatch");
+		{
+		  System.out.println("GOT HERE: " + type.image + ", " + etype);		  throw new TypeException("Type mismatch");
 		}
 		
 		char reg2 = variables.get(t.image);
@@ -131,7 +145,7 @@ String cmp_exp() :
     }
   )*
   {
-    return "boolean";
+    return cmp_type1;
   }
 }String exp() :{  Token t;
   String type5, type6;}{  type5 = term()  (    (      t = < PLUS >    | t = < MINUS >    )    type6 = term()    {      System.out.print(t.image + " ");
