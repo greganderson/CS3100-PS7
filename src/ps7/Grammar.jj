@@ -53,8 +53,25 @@
 | < BOOLEAN : ("true" | "false") >| < VAR : (< LETTER >)+ >| < #LETTER :    [ "a"-"z" ]  | [ "A"-"Z" ] >
 | < STRING: "\"" (~["\"", "[", "]"])* "\"" >}/***************************** Productions that define grammar *******************/void program() :{
 }{  (    statement()
-  | declaration()  )*
-  < EOF >}
+  | declaration()
+  | conditional()  )*
+  < EOF >}
+
+void conditional() :
+{
+  String bool;}
+{
+  (
+    "if (" bool = cmp_exp() ") " 
+    {
+      checkBool(bool);
+      System.out.print("sa [");    }
+    "{ " (statement())+ " } "
+    {
+      System.out.print("] la 0 [sa [");    }
+    "else { " (statement())+ " }"
+    {
+      System.out.print("]] sa =a ");    }  )}
 void statement() :{  Token t;
   Token type;
   String etype;}{  (
