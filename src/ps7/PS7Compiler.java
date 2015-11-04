@@ -69,7 +69,22 @@ public class PS7Compiler implements PS7CompilerConstants {
         jj_la1[0] = jj_gen;
         break label_1;
       }
-      statement();
+      switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
+      case INTTYPE:
+      case STRINGTYPE:
+      case BOOLEANTYPE:
+      case PRINT:
+      case NEWLINE:
+        statement();
+        break;
+      case VAR:
+        declaration();
+        break;
+      default:
+        jj_la1[1] = jj_gen;
+        jj_consume_token(-1);
+        throw new ParseException();
+      }
     }
     jj_consume_token(0);
   }
@@ -79,24 +94,6 @@ public class PS7Compiler implements PS7CompilerConstants {
   Token type;
   String etype;
     switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
-    case VAR:
-      t = jj_consume_token(VAR);
-      jj_consume_token(EQUALS);
-      etype = cmp_exp();
-      jj_consume_token(25);
-      if (variables.get(t.image) == null)
-      {
-          {if (true) throw new TypeException("Undeclared variable: " + t.image);}
-      }
-
-      if (!types.get(t.image).equals(etype))
-          {
-                  {if (true) throw new TypeException("Type mismatch");}
-      }
-
-      char reg = variables.get(t.image);
-      System.out.println("s" + reg + " ");
-      break;
     case INTTYPE:
     case STRINGTYPE:
     case BOOLEANTYPE:
@@ -111,7 +108,7 @@ public class PS7Compiler implements PS7CompilerConstants {
         type = jj_consume_token(BOOLEANTYPE);
         break;
       default:
-        jj_la1[1] = jj_gen;
+        jj_la1[2] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -161,10 +158,32 @@ public class PS7Compiler implements PS7CompilerConstants {
             System.out.println("[] n ");
       break;
     default:
-      jj_la1[2] = jj_gen;
+      jj_la1[3] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
+  }
+
+  final public void declaration() throws ParseException {
+  Token t;
+  Token type;
+  String etype;
+    t = jj_consume_token(VAR);
+    jj_consume_token(EQUALS);
+    etype = cmp_exp();
+    jj_consume_token(25);
+      if (variables.get(t.image) == null)
+      {
+          {if (true) throw new TypeException("Undeclared variable: " + t.image);}
+      }
+
+      if (!types.get(t.image).equals(etype))
+          {
+                  {if (true) throw new TypeException("Type mismatch");}
+      }
+
+      char reg = variables.get(t.image);
+      System.out.println("s" + reg + " ");
   }
 
   final public String cmp_exp() throws ParseException {
@@ -180,7 +199,7 @@ public class PS7Compiler implements PS7CompilerConstants {
         ;
         break;
       default:
-        jj_la1[3] = jj_gen;
+        jj_la1[4] = jj_gen;
         break label_2;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -194,7 +213,7 @@ public class PS7Compiler implements PS7CompilerConstants {
         t = jj_consume_token(ISEQUAL);
         break;
       default:
-        jj_la1[4] = jj_gen;
+        jj_la1[5] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -243,7 +262,7 @@ public class PS7Compiler implements PS7CompilerConstants {
         ;
         break;
       default:
-        jj_la1[5] = jj_gen;
+        jj_la1[6] = jj_gen;
         break label_3;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -254,7 +273,7 @@ public class PS7Compiler implements PS7CompilerConstants {
         t = jj_consume_token(MINUS);
         break;
       default:
-        jj_la1[6] = jj_gen;
+        jj_la1[7] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -279,7 +298,7 @@ public class PS7Compiler implements PS7CompilerConstants {
         ;
         break;
       default:
-        jj_la1[7] = jj_gen;
+        jj_la1[8] = jj_gen;
         break label_4;
       }
       switch ((jj_ntk==-1)?jj_ntk():jj_ntk) {
@@ -290,7 +309,7 @@ public class PS7Compiler implements PS7CompilerConstants {
         t = jj_consume_token(DIVIDE);
         break;
       default:
-        jj_la1[8] = jj_gen;
+        jj_la1[9] = jj_gen;
         jj_consume_token(-1);
         throw new ParseException();
       }
@@ -329,7 +348,7 @@ public class PS7Compiler implements PS7CompilerConstants {
         {if (true) return type2;}
       break;
     default:
-      jj_la1[9] = jj_gen;
+      jj_la1[10] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -384,7 +403,7 @@ public class PS7Compiler implements PS7CompilerConstants {
         {if (true) return type1;}
       break;
     default:
-      jj_la1[10] = jj_gen;
+      jj_la1[11] = jj_gen;
       jj_consume_token(-1);
       throw new ParseException();
     }
@@ -400,13 +419,13 @@ public class PS7Compiler implements PS7CompilerConstants {
   public Token jj_nt;
   private int jj_ntk;
   private int jj_gen;
-  final private int[] jj_la1 = new int[11];
+  final private int[] jj_la1 = new int[12];
   static private int[] jj_la1_0;
   static {
       jj_la1_init_0();
    }
    private static void jj_la1_init_0() {
-      jj_la1_0 = new int[] {0x47c000,0x1c000,0x47c000,0x700,0x700,0xc0,0xc0,0x1800,0x1800,0x5682080,0x5680000,};
+      jj_la1_0 = new int[] {0x47c000,0x47c000,0x1c000,0x7c000,0x700,0x700,0xc0,0xc0,0x1800,0x1800,0x5682080,0x5680000,};
    }
 
   /** Constructor with InputStream. */
@@ -420,7 +439,7 @@ public class PS7Compiler implements PS7CompilerConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -434,7 +453,7 @@ public class PS7Compiler implements PS7CompilerConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   /** Constructor. */
@@ -444,7 +463,7 @@ public class PS7Compiler implements PS7CompilerConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -454,7 +473,7 @@ public class PS7Compiler implements PS7CompilerConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   /** Constructor with generated Token Manager. */
@@ -463,7 +482,7 @@ public class PS7Compiler implements PS7CompilerConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   /** Reinitialise. */
@@ -472,7 +491,7 @@ public class PS7Compiler implements PS7CompilerConstants {
     token = new Token();
     jj_ntk = -1;
     jj_gen = 0;
-    for (int i = 0; i < 11; i++) jj_la1[i] = -1;
+    for (int i = 0; i < 12; i++) jj_la1[i] = -1;
   }
 
   private Token jj_consume_token(int kind) throws ParseException {
@@ -528,7 +547,7 @@ public class PS7Compiler implements PS7CompilerConstants {
       la1tokens[jj_kind] = true;
       jj_kind = -1;
     }
-    for (int i = 0; i < 11; i++) {
+    for (int i = 0; i < 12; i++) {
       if (jj_la1[i] == jj_gen) {
         for (int j = 0; j < 32; j++) {
           if ((jj_la1_0[i] & (1<<j)) != 0) {
