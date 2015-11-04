@@ -151,10 +151,12 @@ String cmp_exp() :
     cmp_type2 = exp()
     {
       if (t.image.equals("<"))      {
-      	System.out.print("sa sb 1 lb la [sa 0] sa <a ");      }
+      	System.out.print("sa sb 1 lb la [sa 0] sa <a ");
+      	return "boolean";      }
       else if (t.image.equals(">"))
       {
-        System.out.print("sa sb 1 lb la [sa 0] sa >a ");      }
+        System.out.print("sa sb 1 lb la [sa 0] sa >a ");
+        return "boolean";      }
       else if (t.image.equals("=="))      {
         System.out.print("sa sb 0 lb la [sa 1] sa =a ");
         try        {  			checkBool(cmp_type1);

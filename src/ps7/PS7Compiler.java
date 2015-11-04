@@ -272,10 +272,12 @@ public class PS7Compiler implements PS7CompilerConstants {
       if (t.image.equals("<"))
       {
         System.out.print("sa sb 1 lb la [sa 0] sa <a ");
+        {if (true) return "boolean";}
       }
       else if (t.image.equals(">"))
       {
         System.out.print("sa sb 1 lb la [sa 0] sa >a ");
+        {if (true) return "boolean";}
       }
       else if (t.image.equals("=="))
       {
