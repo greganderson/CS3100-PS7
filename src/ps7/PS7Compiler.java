@@ -377,7 +377,7 @@ public class PS7Compiler implements PS7CompilerConstants {
       break;
     case 26:
       jj_consume_token(26);
-      type1 = exp();
+      type1 = cmp_exp();
       jj_consume_token(27);
         {if (true) return type1;}
       break;

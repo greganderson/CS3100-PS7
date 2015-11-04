@@ -170,7 +170,6 @@ String cmp_exp() :
 	  else	  {		System.out.println("0 ");
 	  }
 		return "boolean";
-
 	}
 |
   t = < STRING >
@@ -182,6 +181,6 @@ String cmp_exp() :
 |    t = < VAR >  {    Character reg = variables.get(t.image);    if (reg == null)    {
       throw new RuntimeException("Undefined variable " + t.image);    }    else    {      System.out.print("l" + reg + " ");
       return types.get(t.image);    }  }
-| "(" type1 = exp() ")"
+| "(" type1 = cmp_exp() ")"
   {	return type1;
   }}
