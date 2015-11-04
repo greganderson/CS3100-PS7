@@ -192,14 +192,15 @@ public class PS7Compiler implements PS7CompilerConstants {
       cmp_type2 = exp();
       if (t.image.equals("<"))
       {
-        System.out.print("sa [true] la 0 [sa [false]] sa <a n ");
+        System.out.print("sa sb [true] lb la [sa [false]] sa <a n ");
       }
       else if (t.image.equals(">"))
       {
-        System.out.print("sa [true] la 0 [sa [false]] sa >a n ");
+        System.out.print("sa sb [true] lb la [sa [false]] sa >a n ");
       }
       else if (t.image.equals("=="))
       {
+        System.out.print("sa sb [true] lb la [sa [false]] sa =a n ");
         try
         {
                         checkBool(cmp_type1);
