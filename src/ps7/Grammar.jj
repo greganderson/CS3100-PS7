@@ -125,7 +125,6 @@ void declaration() :
 
 		if (!type.image.equals(etype))
 		{
-		  System.out.println("GOT HERE: " + type.image + ", " + etype);
 		  throw new TypeException("Type mismatch");
 		}
 		
@@ -163,12 +162,14 @@ String cmp_exp() :
         return "boolean";      }
       else if (t.image.equals("=="))      {
         System.out.print("sa sb 0 lb la [sa 1] sa =a ");
-        try        {  			checkBool(cmp_type1);
-			checkBool(cmp_type2);
+        try        {		  checkBool(cmp_type1);
+		  checkBool(cmp_type2);
+		  return "boolean";
 		}
 		catch(TypeException e)		{
 		  checkInt(cmp_type1);
-		  checkInt(cmp_type2);		}
+		  checkInt(cmp_type2);
+		  return "boolean";		}
       }
       else      {
       	checkInt(cmp_type1);

@@ -218,7 +218,6 @@ public class PS7Compiler implements PS7CompilerConstants {
 
                 if (!type.image.equals(etype))
                 {
-                  System.out.println("GOT HERE: " + type.image + ", " + etype);
                   {if (true) throw new TypeException("Type mismatch");}
                 }
 
@@ -278,13 +277,15 @@ public class PS7Compiler implements PS7CompilerConstants {
         System.out.print("sa sb 0 lb la [sa 1] sa =a ");
         try
         {
-                        checkBool(cmp_type1);
-                        checkBool(cmp_type2);
+                  checkBool(cmp_type1);
+                  checkBool(cmp_type2);
+                  {if (true) return "boolean";}
                 }
                 catch(TypeException e)
                 {
                   checkInt(cmp_type1);
                   checkInt(cmp_type2);
+                  {if (true) return "boolean";}
                 }
       }
       else
