@@ -175,7 +175,7 @@ public class PS7Compiler implements PS7CompilerConstants {
     case NEWLINE:
       jj_consume_token(NEWLINE);
       jj_consume_token(31);
-            System.out.println("[] n ");
+            System.out.println("[] p n ");
       break;
     default:
       jj_la1[4] = jj_gen;

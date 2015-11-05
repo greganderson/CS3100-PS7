@@ -100,7 +100,7 @@ void statement() :{  Token t;
 |
 	(
 	  < NEWLINE > ";"
-	  {	    System.out.println("[] n ");
+	  {	    System.out.println("[] p n ");
 	  }	)}
 
 void declaration() :
