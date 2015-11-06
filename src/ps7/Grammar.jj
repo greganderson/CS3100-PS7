@@ -66,17 +66,17 @@ void conditional() :
     {
       checkBool(bool);
       System.out.print("sa [");    }
-    "{ " (statement())+ " } "
+    "{" (statement())* "} "
     {
       System.out.print("] la 0 [sa [");    }
-    "else { " (statement())+ " }"
+    "else {" (statement())* "}"
     {
       System.out.print("]] sa =a x");    }  )}
 void statement() :{  Token t;
   Token type;
   String etype;}{
   (
-    t = < VAR > < EQUALS > etype = cmp_exp() ";"
+    t = < VAR > (< EQUALS > | < GREATERTHAN > | < LESSTHAN > | < ISEQUAL >) etype = cmp_exp() ";"
     {
       if (variables.get(t.image) == null)
       {
@@ -92,16 +92,19 @@ void statement() :{  Token t;
       System.out.println("s" + reg + " ");
     }
   )
-|     (    < PRINT > etype = cmp_exp() ";"    {
+|    (    < PRINT > etype = cmp_exp() ";"    {
       if (etype.equals("boolean"))      {
-        System.out.println("sa [true] la 0 [sa [false]] sa =a n");      }
+        System.out.println("sa [true] la 0 [sa [false]] sa =a n ");      }
       else      {
-        System.out.println("n ");      }          }  )
+        System.out.println("n ");      }    }
+  )
 |
-	(
+  (
 	  < NEWLINE > ";"
-	  {	    System.out.println("[] p n ");
-	  }	)}
+	  {
+	    System.out.println("[] p n ");
+	  }
+  )}
 
 void declaration() :
 {
@@ -146,36 +149,44 @@ String cmp_exp() :
 {
   cmp_type1 = exp()
   (
-    (
-      t = < GREATERTHAN >
-    | t = < LESSTHAN >
-    | t = < ISEQUAL >
-    )
-    cmp_type2 = exp()
-    {
-      if (t.image.equals("<"))      {
-      	System.out.print("sa sb 1 lb la [sa 0] sa <a ");
-      	return "boolean";      }
-      else if (t.image.equals(">"))
+    (      (
+        t = < GREATERTHAN >
+      )
+      cmp_type2 = exp()
       {
         System.out.print("sa sb 1 lb la [sa 0] sa >a ");
-        return "boolean";      }
-      else if (t.image.equals("=="))      {
-        System.out.print("sa sb 0 lb la [sa 1] sa =a ");
-        try        {		  checkBool(cmp_type1);
-		  checkBool(cmp_type2);
-		  return "boolean";
-		}
-		catch(TypeException e)		{
-		  checkInt(cmp_type1);
-		  checkInt(cmp_type2);
-		  return "boolean";		}
+        return "boolean";
       }
-      else      {
-      	checkInt(cmp_type1);
-	  	checkInt(cmp_type2);
-	  }
-    }
+    )
+  |
+    (
+      (
+        t = < LESSTHAN >
+      )
+      cmp_type2 = exp()
+      {
+        System.out.print("sa sb 1 lb la [sa 0] sa <a ");
+        return "boolean";
+      }
+    )
+  |
+    (
+      (
+        t = < ISEQUAL >
+      )
+      cmp_type2 = exp()
+      {
+        System.out.print("sa sb 0 lb la [sa 1] sa =a ");
+        try        {
+          checkBool(cmp_type1);
+		  checkBool(cmp_type2);
+		}
+		catch (TypeException e)		{
+		  checkInt(cmp_type1);
+		  checkInt(cmp_type2);		}
+        return "boolean";
+      }
+    )
   )*
   {
     return cmp_type1;
